@@ -29,6 +29,26 @@ const userSchema = new mongoose.Schema({
     expertise: {
         type: String, // Array of strings to store expertise
         required: false,   // Default to an empty array
+    },
+    age:{
+        type:Number,
+        default: null
+    },
+    city:{
+        type:String,
+        default: "Mumbai, IN"
+    },
+    college:{
+        type:String,
+        default: null
+    },
+    education:{
+        type:String,
+        default: null
+    },
+    experience:{
+        type:String,
+        default: "Fresher"
     }
 },
 { timestamps: true }
