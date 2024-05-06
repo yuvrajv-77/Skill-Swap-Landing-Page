@@ -49,7 +49,15 @@ const userSchema = new mongoose.Schema({
     experience:{
         type:String,
         default: "Fresher"
-    }
+    },
+    title:{
+        type:String,
+        default: null
+    },
+    description:{
+        type:String,
+        default: null
+    },
 },
 { timestamps: true }
 );

@@ -1,35 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Searchbox from './Searchbox'
+
 import { AuthContext } from '../../../context/AuthContext';
 import BrandName from "../../../assets/brandName.svg?react";
 import BrandLogo from "../../../assets/brandLogo.svg?react";
 import SkillCard from './SkillCard';
 import {
   Avatar, Menu, MenuHandler, MenuList, MenuItem, Tooltip, Typography, Button,
-  Dialog,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
 
-  Input,
-  Checkbox,
 } from "@material-tailwind/react";
 import DialogForm from '../../../components/DialogForm';
 import axios from 'axios';
 
 
+
 function DashboardLayout() {
   const { authUser, setAuthUser, selectedChat, setSelectedChat, searchSkill, setSearchSkill } = useContext(AuthContext);
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  // const [dialogOpen, setDialogOpen] = React.useState(!authUser?.skills || authUser.skills.length === 0);
-  // const handleOpen = () => setDialogOpen((cur) => !cur);
-  // const handleOpen = () => {
-  //   if (authUser.skills && authUser.skills.length > 0) {
-  //     setDialogOpen((cur) => !cur);
-  //   }
-  // };
+
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   useEffect(() => {
@@ -37,16 +25,23 @@ function DashboardLayout() {
   }, [authUser?.skills]);
 
 
-  const fetchAllUsers = async() =>{
-      try{
-        const response = await axios.get('http://localhost:6001/api/getallusers')
-        const allUsers = response.data;
-        console.log("Fetching all users ", allUsers);
-      }catch(error){
-        console.log("error in fetching all users ",error);
-      }
+  const fetchAllUsers = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get('http://localhost:6001/api/getallusers')
+      const allUsers = response.data;
+      console.log("Fetching all users ", allUsers);
+
+      const matchingUsers = allUsers.filter(user => user.skills.includes(searchSkill));
+      console.log("Matching users: ", matchingUsers);
+      setSearchResult(matchingUsers);
+      setIsLoading(false);
+
+    } catch (error) {
+      console.log("error in fetching all users ", error);
+    }
   }
-  fetchAllUsers();
+  // fetchAllUsers();
 
   const logOut = () => {
     localStorage.removeItem('userLocalData');
@@ -117,125 +112,61 @@ function DashboardLayout() {
         <div className='  p-5 flex flex-col items-center my-3 '>
           <div className='p-2 text-center'>
             <h1 className='text-[4.3rem] font-medium text-center'>Connect And Swap Skills</h1>
-            <span className='text-[2rem] py-2 px-5 rounded-3xl font- bg-second-500  '>With Like-Minded Peers</span>
+            <span className='text-[2rem] py-2 px-5 rounded-3xl font- bg-second-500'>With Like-Minded Peers</span>
           </div>
-          <Searchbox />
+          <div className='w-1/2 mx-auto'>
+
+            {/* Search bar */}
+            <div className=" p-3 relative   ">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                fetchAllUsers();
+              }}>
+                <input
+                  placeholder="What You Want to Learn Today . . . ."
+                  type="text"
+                  value={searchSkill}
+
+                  onChange={(e) => setSearchSkill(e.target.value)}
+                  className="w-full bg-gray-100 text-lg h-[67px] outline-none border-2 border-prime-600 rounded-[25px] pl-16 p-4 focus:ring-4 focus:second-prime-500"
+                />
+              </form>
+
+              <div className="absolute top-8 left-9  ">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#bdbdbd" fill="none">
+                  <path d="M17.5 17.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                </svg>
+              </div>
+              {searchSkill && (<div className="absolute top-8 right-9 cursor-pointer  " onClick={() => setSearchSkill('')}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#808080" fill="none">
+                  <path d="M19 5L5 19M5 5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>)}
+            </div>
+
+          </div>
         </div>
 
         {/* Results */}
         <div className='border-2 p-10 bg-gray-50 h-full'>
           <div className='flex flex-wrap gap-5 mx-auto'>
-            <SkillCard />
-           
 
+            {/* Showing Skill Cards of Matched Users */}
+            {isLoading ? (
+              <h2>loading</h2>
+            ) : searchResult.length > 0 ? (
+              searchResult.map((user, index) => <SkillCard key={index} data={user} />)
+            ) : (
+              <p>No users found</p>
+            )}
 
           </div>
         </div>
       </div>
 
-
-
-
-
-
-
       <div>
         <DialogForm open={dialogOpen} />
-
-        {/* <Dialog
-          size="xs"
-          open={dialogOpen}
-          // handler={handleOpen}
-          className="bg-transparent shadow-none"
-        >
-          <Card className="mx-auto -ml-[100px] w-[46rem]">
-            <CardBody className="flex flex-col gap-4">
-              <h1 className='text-2xl font-bold'>Hello, {authUser?.name}</h1>
-              <h1 className='text-xl'>Complete Your Profile</h1>
-              <div className='flex gap-8'>
-
-
-                <div className='space-y-8 w-full'>
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='Expertise'
-                    placeholder="Enter your Expertise" />
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='Age'
-                    placeholder="How Old Are You" />
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='City'
-                    placeholder="Enter your City" />
-                </div>
-                <div className='space-y-8 w-full'>
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='College'
-                    placeholder="Enter your College" />
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='Education'
-                    placeholder="Enter Your Degree" />
-                  <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='Experience'
-                    placeholder="Any Experience" />
-                </div>
-
-
-              </div>
-              <div className=''>
-                <h1 className='text-lg font-semibold '>Add Skills</h1>
-              <Input
-                    type="text"
-                    color="lightBlue"
-                    size="regular"
-                    variant='outlined'
-                    label='Type Your Skills'
-                    placeholder="Any Experience" />
-              </div>
-
-            </CardBody>
-            <CardFooter className="pt-0">
-              <Button variant="gradient" onClick fullWidth>
-                Sign In
-              </Button>
-              <Typography variant="small" className="mt-4 flex justify-center">
-                Don&apos;t have an account?
-                <Typography
-                  as="a"
-                  href="#signup"
-                  variant="small"
-                  color="blue-gray"
-                  className="ml-1 font-bold"
-                  onClick
-                >
-                  Sign up
-                </Typography>
-              </Typography>
-            </CardFooter>
-          </Card>
-        </Dialog> */}
       </div>
     </div>
 

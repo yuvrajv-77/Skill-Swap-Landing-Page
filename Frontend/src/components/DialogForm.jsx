@@ -10,6 +10,7 @@ import {
   Input,
   Checkbox,
   collapse,
+  Textarea,
 } from "@material-tailwind/react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
@@ -26,6 +27,8 @@ function DialogForm({ open }) {
   const [input, setInput] = useState('');
   const [isloading, setIsLoading] = useState();
   const [dialogopen, setdialogOpen] = useState(open)
+  const [title,setTitle] = useState("")
+  const [description, setDescription] = useState("")
   // function to add skills to array
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -33,8 +36,7 @@ function DialogForm({ open }) {
     setSkills(newSkills);
     // console.log(skills);
   };
-  const userinfo = JSON.parse(localStorage.getItem('userLocalData'))
-  console.log("userinfo ", userinfo);
+  
 
 
   const handleSubmit = async (event) => {
@@ -50,7 +52,9 @@ function DialogForm({ open }) {
       experience: experience,
       skills: skills,
       city: city,
-      age: age
+      age: age,
+      title: title,
+      description: description
     };
     if (areFieldsFilled) {
       
@@ -62,7 +66,7 @@ function DialogForm({ open }) {
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
         const response = await axios.post(`http://localhost:6001/api/profile/${authUser._id}`, data, config);
-        console.log(response.data.updated);
+        console.log("updated",response.data.updated);
         setAuthUser(response.data.updated);
 
         setIsLoading(false)
@@ -86,13 +90,13 @@ function DialogForm({ open }) {
         className="bg-transparent shadow-none"
       >
         <Card className="mx-auto -ml-[100px] w-[46rem]">
-          <CardBody className="flex flex-col gap-4">
-            <h1 className='text-2xl font-bold'>Hello, {authUser?.name}</h1>
+          <CardBody className="flex flex-col gap-3">
+            <h1 className='text-2xl font-bold text-black'>Hello, {authUser?.name}</h1>
             <h1 className='text-xl'>Complete Your Profile</h1>
-            <div className='flex gap-8'>
+            <div className='flex gap-7'>
 
 
-              <div className='space-y-8 w-full'>
+              <div className='space-y-4 w-full'>
                 <Input
                   type="text"
                   color="lightBlue"
@@ -121,7 +125,7 @@ function DialogForm({ open }) {
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Enter your City" />
               </div>
-              <div className='space-y-8 w-full'>
+              <div className='space-y-4 w-full'>
                 <Input
                   type="text"
                   color="lightBlue"
@@ -154,7 +158,7 @@ function DialogForm({ open }) {
 
             </div>
             <div className=''>
-              <h1 className='text-lg font-semibold '>Add Skills</h1>
+              <h1 className='text-lg font-semibold mb-3 '>Add Skills</h1>
               <Input
                 type="text"
                 color="lightBlue"
@@ -164,7 +168,30 @@ function DialogForm({ open }) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleChange}
-                placeholder="Any Experience" />
+                placeholder="Add Skills comma seperated" />
+            </div>
+            <div className='space-y-2'>
+              <h1 className='text-lg font-semibold mb-2 '>Add Bio</h1>
+              <Input
+                type="text"
+                color="lightBlue"
+                size="regular"
+                variant='outlined'
+                label='Title'
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Add Title" />
+
+                <Textarea 
+                  type="text"
+                  color="lightBlue"
+                  size="regular"
+                  variant='outlined'
+                  label="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  
+                />
             </div>
 
           </CardBody>

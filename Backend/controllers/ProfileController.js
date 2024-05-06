@@ -7,7 +7,7 @@ const ProfileUpdateController = ExAsyncHandler(async (req, res) => {
 
     try {
         const userId = req.params.userId;
-        const { skills, expertise, city, experience, education, college, age } = req.body;
+        const { skills, expertise, city, experience, education, college, age, title, description } = req.body;
 
         // Find the user by ID
         const user = await TheUser.findById(userId);
@@ -23,6 +23,8 @@ const ProfileUpdateController = ExAsyncHandler(async (req, res) => {
         user.education = education;
         user.college = college;
         user.age = age;
+        user.title = title;
+        user.description = description;
         
 
         // Save the updated user object

@@ -6,7 +6,7 @@ import Tilebig from './../components/Tilebig';
 function UserProfile() {
 
   const { authUser, setAuthUser, selectedChat, setSelectedChat, searchSkill, setSearchSkill } = useContext(AuthContext);
-
+  console.log("authUser ", authUser);
   return (
     <div className='ml-[100px] bg-[#f9f6ff] '>
       <div className='h-[13rem] bg-[#eddfff]  px-28 relative'>
@@ -54,8 +54,8 @@ function UserProfile() {
 
           <div className='bg-[#eadbfd] w-[40rem] p-9 rounded-2xl hover:shadow-lg  h-54'>
             <p className='text-[30px]'>👋🏼</p>
-            <h2 className='text-xl font-semibold mb-5'>UX Design Specialist</h2>
-            <p className='text-sm'>Lorem ipsum, dolor sit amet Soluta, reprehenderit, dolore optio tenetur sunt molestiae nam culpa, at beatae ducimus voluptatum. Optio autem a architecto quia ex possimus</p>
+            <h2 className='text-xl font-semibold mb-5'>{authUser?.title}</h2>
+            <p className='text-sm'>{authUser?.description}</p>
           </div>
 
           <div className='bg-[#ffffff] w-[36rem] p-11 rounded-2xl h-54  grid grid-cols-2 grid-rows-3 gap-8 my-auto hover:shadow-lg'>
@@ -129,7 +129,7 @@ function UserProfile() {
 
             </div>
           </div>
-          <div className='p-6 bg-white rounded-xl'>
+          {/* <div className='p-6 bg-white rounded-xl'>
             <h1 className='text-2xl font-semibold mb-6'>Skills I Want</h1>
             <div className='flex flex-wrap gap-5'>
               <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
@@ -149,7 +149,7 @@ function UserProfile() {
               </div>
 
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
