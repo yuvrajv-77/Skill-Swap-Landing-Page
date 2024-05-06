@@ -1,6 +1,7 @@
 import { Avatar, Chip, IconButton } from '@material-tailwind/react'
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext';
+import Tilebig from './../components/Tilebig';
 
 function UserProfile() {
 
@@ -71,7 +72,7 @@ function UserProfile() {
                 <path d="M13.2574 17.4936C12.9201 17.8184 12.4693 18 12.0002 18C11.531 18 11.0802 17.8184 10.7429 17.4936C7.6543 14.5008 3.51519 11.1575 5.53371 6.30373C6.6251 3.67932 9.24494 2 12.0002 2C14.7554 2 17.3752 3.67933 18.4666 6.30373C20.4826 11.1514 16.3536 14.5111 13.2574 17.4936Z" stroke="currentColor" stroke-width="1.5" />
                 <path d="M18 20C18 21.1046 15.3137 22 12 22C8.68629 22 6 21.1046 6 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
               </svg>
-              Mumbai, IN
+              {authUser?.city}
             </p>
             <p className='flex items-center gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" color="#000000" fill="none">
@@ -83,7 +84,7 @@ function UserProfile() {
                 <path d="M12 22V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                 <path d="M12 7V4.98221M12 4.98221V2.97035C12 2.49615 12 2.25905 12.1464 2.11173C12.6061 1.64939 14.5 2.74303 15.2203 3.18653C15.8285 3.56105 16 4.30914 16 4.98221H12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              IIT Bombay
+              {authUser?.college}
             </p>
             <p className='flex items-center gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" color="#000000" fill="none">
@@ -93,7 +94,7 @@ function UserProfile() {
                 <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M3 8H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              21 yrs
+              {authUser?.age} Years Old
             </p>
             <p className='flex items-center gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" color="#000000" fill="none">
@@ -101,7 +102,7 @@ function UserProfile() {
                 <path d="M15 13.6067C13.6383 13.0337 10.9233 10.9504 10.9574 7.20068M11.5 15.7007C10.3333 15.144 7.9 13.0782 7.5 9.26917" stroke="currentColor" stroke-width="1.5" />
                 <path d="M15.43 14C16.0276 15.1302 16.639 18.1124 14.5498 21L13.5632 19.584L11 20.8103C11 20.8103 12.8249 18.8868 11.9528 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              BCA
+              {authUser?.education}
             </p>
             <p className='flex items-center gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" color="#000000" fill="none">
@@ -109,7 +110,7 @@ function UserProfile() {
                 <path d="M3.46283 10.5L3.26658 12.7757C2.91481 16.855 2.73892 18.8947 3.86734 20.1974C4.99576 21.5 6.93851 21.5 10.824 21.5H13.176C17.0615 21.5 19.0042 21.5 20.1327 20.1974C21.2611 18.8947 21.0852 16.855 20.7334 12.7757L20.5372 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M15.5 5.5L15.4227 5.23509C15.0377 3.91505 14.8452 3.25503 14.3869 2.87752C13.9286 2.5 13.3199 2.5 12.1023 2.5H11.8977C10.6801 2.5 10.0714 2.5 9.61309 2.87752C9.15478 3.25503 8.96228 3.91505 8.57727 5.23509L8.5 5.5" stroke="currentColor" stroke-width="1.5" />
               </svg>
-              Fresher
+              {authUser?.experience}
             </p>
           </div>
         </div>
@@ -119,30 +120,12 @@ function UserProfile() {
           <div className='p-6 bg-white rounded-xl'>
             <h1 className='text-2xl font-semibold mb-6'>Skills I Have</h1>
             <div className='flex flex-wrap gap-5'>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                UI Desiging
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                User Experience
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                WireFraming
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                Product Designer
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                Product Designer
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                Product Designer
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                Product Designer
-              </div>
-              <div className='bg-blue-gray-50 rounded-r-3xl rounded-b-4xl text-[16px] font-semibold text-blue-gray-700 rounded-t-2xl px-5 py-3'>
-                Web
-              </div>
+
+              {authUser?.skills.map((skill, index) => (
+                <Tilebig key={index} skill={skill} />
+              ))}
+
+             
 
             </div>
           </div>

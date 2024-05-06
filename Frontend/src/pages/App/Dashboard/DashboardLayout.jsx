@@ -16,6 +16,7 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 import DialogForm from '../../../components/DialogForm';
+import axios from 'axios';
 
 
 function DashboardLayout() {
@@ -36,6 +37,16 @@ function DashboardLayout() {
   }, [authUser?.skills]);
 
 
+  const fetchAllUsers = async() =>{
+      try{
+        const response = await axios.get('http://localhost:6001/api/getallusers')
+        const allUsers = response.data;
+        console.log("Fetching all users ", allUsers);
+      }catch(error){
+        console.log("error in fetching all users ",error);
+      }
+  }
+  fetchAllUsers();
 
   const logOut = () => {
     localStorage.removeItem('userLocalData');

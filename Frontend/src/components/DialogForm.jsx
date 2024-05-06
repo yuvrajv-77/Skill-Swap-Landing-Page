@@ -24,6 +24,8 @@ function DialogForm({ open }) {
   const [city, setCity] = useState('');
   const [age, setAge] = useState('');
   const [input, setInput] = useState('');
+  const [isloading, setIsLoading] = useState();
+  const [dialogopen, setdialogOpen] = useState(open)
   // function to add skills to array
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -35,8 +37,9 @@ function DialogForm({ open }) {
   console.log("userinfo ", userinfo);
 
 
-  const handleSubmit = async(event)=>{
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading('true');
 
     // Check if all fields are filled
     const areFieldsFilled = input && skills.length > 0 && college && education && expertise && experience && city && age;
@@ -49,26 +52,29 @@ function DialogForm({ open }) {
       city: city,
       age: age
     };
-    if(areFieldsFilled){
-      try{
+    if (areFieldsFilled) {
+      
+      try {
         const config = {
           headers: {
-              Authorization: `Bearer ${authUser.token}`
+            Authorization: `Bearer ${authUser.token}`
           }
-      }
-        
-				const response = await axios.post(`http://localhost:6001/api/profile/${userinfo._id}`, data, config);
-				console.log(response.data);
-        
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await axios.post(`http://localhost:6001/api/profile/${authUser._id}`, data, config);
+        console.log(response.data.updated);
+        setAuthUser(response.data.updated);
 
-      }catch(e) {
+        setIsLoading(false)
+
+      } catch (e) {
         console.log("Error in submitting form", e);
       }
     }
-    
+
 
   }
-  
+
 
 
   return (
@@ -97,7 +103,7 @@ function DialogForm({ open }) {
                   onChange={(e) => setExpertise(e.target.value)}
                   placeholder="Enter your Expertise" />
                 <Input
-                  type="text"
+                  type="number"
                   color="lightBlue"
                   size="regular"
                   variant='outlined'
@@ -163,10 +169,15 @@ function DialogForm({ open }) {
 
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={handleSubmit} fullWidth>
+            <Button variant="gradient"
+              loading={isloading}
+              disabled={!college || !education || !expertise || !experience || !skills.length || !city || !age}
+              onClick={handleSubmit}
+              className=" flex justify-center"
+              fullWidth>
               Submit
             </Button>
-            
+
           </CardFooter>
         </Card>
       </Dialog>

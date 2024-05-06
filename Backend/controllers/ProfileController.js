@@ -29,7 +29,7 @@ const ProfileUpdateController = ExAsyncHandler(async (req, res) => {
         await user.save();
 
         // Respond with the updated user object
-        res.json({message: "Profile Updated Successfully" ,updated: user});
+        res.json({message: "updated" ,updated: user});
         console.log("Profile Updated Successfully");
     } catch (error) {
         console.error('Error updating user profile:', error);
