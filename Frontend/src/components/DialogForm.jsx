@@ -9,28 +9,67 @@ import {
   Typography,
   Input,
   Checkbox,
+  collapse,
 } from "@material-tailwind/react";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 function DialogForm({ open }) {
   const { authUser, setAuthUser } = useContext(AuthContext);
-  const { college, setCollege } = useState('');
-  const { education, setEducation } = useState('');
-  const { expertise, setExpertise } = useState('');
-  const { experience, setExperience } = useState('');
-  const { skills, setSkills } = useState('');
-  const { city, setCity } = useState('');
-  const { age, setAge } = useState('');
-  const { input, setInput } = useState('');
-
+  const [college, setCollege] = useState('');
+  const [education, setEducation] = useState('');
+  const [expertise, setExpertise] = useState('');
+  const [experience, setExperience] = useState('');
+  const [skills, setSkills] = useState('');
+  const [city, setCity] = useState('');
+  const [age, setAge] = useState('');
+  const [input, setInput] = useState('');
   // function to add skills to array
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      setSkills([...skills, input]);
-      setInput('');
-    }
+  const handleChange = (event) => {
+    setInput(event.target.value);
+    const newSkills = event.target.value.split(',').map(skill => skill.trim());
+    setSkills(newSkills);
+    // console.log(skills);
   };
-  console.log("Skills", skills);
+  const userinfo = JSON.parse(localStorage.getItem('userLocalData'))
+  console.log("userinfo ", userinfo);
+
+
+  const handleSubmit = async(event)=>{
+    event.preventDefault();
+
+    // Check if all fields are filled
+    const areFieldsFilled = input && skills.length > 0 && college && education && expertise && experience && city && age;
+    const data = {
+      college: college,
+      education: education,
+      expertise: expertise,
+      experience: experience,
+      skills: skills,
+      city: city,
+      age: age
+    };
+    if(areFieldsFilled){
+      try{
+        const config = {
+          headers: {
+              Authorization: `Bearer ${authUser.token}`
+          }
+      }
+        
+				const response = await axios.post(`http://localhost:6001/api/profile/${userinfo._id}`, data, config);
+				console.log(response.data);
+        
+
+      }catch(e) {
+        console.log("Error in submitting form", e);
+      }
+    }
+    
+
+  }
+  
+
 
   return (
     <div>
@@ -54,6 +93,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='Expertise'
+                  value={expertise}
+                  onChange={(e) => setExpertise(e.target.value)}
                   placeholder="Enter your Expertise" />
                 <Input
                   type="text"
@@ -61,6 +102,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='Age'
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
                   placeholder="How Old Are You" />
                 <Input
                   type="text"
@@ -68,6 +111,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='City'
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
                   placeholder="Enter your City" />
               </div>
               <div className='space-y-8 w-full'>
@@ -77,6 +122,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='College'
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
                   placeholder="Enter your College" />
                 <Input
                   type="text"
@@ -84,6 +131,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='Education'
+                  value={education}
+                  onChange={(e) => setEducation(e.target.value)}
                   placeholder="Enter Your Degree" />
                 <Input
                   type="text"
@@ -91,6 +140,8 @@ function DialogForm({ open }) {
                   size="regular"
                   variant='outlined'
                   label='Experience'
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
                   placeholder="Any Experience" />
               </div>
 
@@ -106,28 +157,16 @@ function DialogForm({ open }) {
                 label='Type Your Skills'
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleChange}
                 placeholder="Any Experience" />
             </div>
 
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick fullWidth>
-              Sign In
+            <Button variant="gradient" onClick={handleSubmit} fullWidth>
+              Submit
             </Button>
-            <Typography variant="small" className="mt-4 flex justify-center">
-              Don&apos;t have an account?
-              <Typography
-                as="a"
-                href="#signup"
-                variant="small"
-                color="blue-gray"
-                className="ml-1 font-bold"
-                onClick
-              >
-                Sign up
-              </Typography>
-            </Typography>
+            
           </CardFooter>
         </Card>
       </Dialog>

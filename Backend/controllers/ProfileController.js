@@ -18,6 +18,12 @@ const ProfileUpdateController = ExAsyncHandler(async (req, res) => {
         // Update user's skills and expertise
         user.skills = skills;
         user.expertise = expertise;
+        user.city = city;
+        user.experience = experience;
+        user.education = education;
+        user.college = college;
+        user.age = age;
+        
 
         // Save the updated user object
         await user.save();

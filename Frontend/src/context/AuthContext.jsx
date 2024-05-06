@@ -15,7 +15,7 @@ function AuthContextProvider({children}){
         setAuthUser(userinfo);
 
     },[])
-    
+    console.log(authUser);
     return(
         <AuthContext.Provider value={{authUser, setAuthUser,selectedChat, setSelectedChat,searchSkill, setSearchSkill }}>
             {children}
