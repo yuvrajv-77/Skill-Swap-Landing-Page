@@ -24,7 +24,7 @@ function SkillCard({ data }) {
 
             <div className='flex flex-col gap-y-2'>
                 <div className=' flex items-center'>
-                    <Avatar className='mx-auto w-[150px] h-[140px]' variant='rounded' src='https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' />
+                    <Avatar className='mx-auto w-[150px] h-[140px]' variant='rounded' src={data.avatar} />
                 </div>
 
                 <div className='flex gap-2'>
@@ -43,7 +43,7 @@ function SkillCard({ data }) {
                 <Chip color='pink' variant='ghost' value={data.expertise} />
                 <div className=' flex flex-col gap-2'>
                     <h2 className='text-xl'><b>{data.name}</b></h2>
-                    <p>Description</p>
+                    <p>{data.title}</p>
                 </div>
                 <div className='flex gap-3 '>
                     {

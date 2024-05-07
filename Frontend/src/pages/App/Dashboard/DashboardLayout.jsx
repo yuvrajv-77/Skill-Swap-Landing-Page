@@ -127,8 +127,9 @@ function DashboardLayout() {
                   type="text"
                   value={searchSkill}
 
-                  onChange={(e) => setSearchSkill(e.target.value)}
-                  className="w-full bg-gray-100 text-lg h-[67px] outline-none border-2 border-prime-600 rounded-[25px] pl-16 p-4 focus:ring-4 focus:second-prime-500"
+                  onChange={(e) => {const capValue = e.target.value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                    setSearchSkill(capValue);}}
+                  className="w-full bg-gray-100 text-lg h-[67px] outline-none border-2  border-prime-600 rounded-[25px] pl-16 p-4 focus:ring-4 focus:second-prime-500"
                 />
               </form>
 
